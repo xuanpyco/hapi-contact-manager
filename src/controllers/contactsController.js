@@ -1,7 +1,7 @@
-const ContactsRepository = require('../repositories/inMemoryContactsRepo');
+const contactsRepo = require('../repositories/ContactRepo');
 const contactService = require('../services/contactsService');
 const Boom = require('Boom');
-const contactsRepo = new ContactsRepository(); //==>Dummy repo for now
+//const contactsRepo = new ContactsRepository(db); //==>Dummy repo for now
 
 const getContact = (request, reply) => {
     const id = request.params.id;
@@ -19,6 +19,7 @@ const getContact = (request, reply) => {
 };
 
 const getContacts = (request, reply) => {
+    console.log('getting contacts');
     return contactService
         .getContacts(contactsRepo.getContacts)
         .then(contacts => reply(contacts))
@@ -55,7 +56,7 @@ const deleteContact = (request, reply) => {
 
     contactService
         .removeContact(id, contactsRepo.removeContact)
-        .then(reply().code(204))
+        .then(() => {reply().code(204)})
         .catch(error => {
             if(error.code === 'NoSuchContact'){
                 return reply(Boom.notFound('Contact not found', error));

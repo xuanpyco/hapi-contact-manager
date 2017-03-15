@@ -3,13 +3,14 @@ const { asPromise } = require('../utils');
 
 
 module.exports = class ContactsRepo {
-    constructor(contacts = []){
+    constructor(contacts = [], db){
         this.contacts = contacts;
         this.getContact = this.getContact.bind(this);
         this.getContacts = this.getContacts.bind(this);
         this.addContact = this.addContact.bind(this);
         this.updateContact = this.updateContact.bind(this);
         this.removeContact = this.removeContact.bind(this);
+        this.db = db;
     }
 
     getContact(id) {
@@ -18,6 +19,8 @@ module.exports = class ContactsRepo {
     }
 
     getContacts(){
+        console.log('getting contacts');
+        console.log(this.db);
         return asPromise(null, this.contacts);
     }
 
